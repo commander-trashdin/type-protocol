@@ -42,10 +42,10 @@
    (default-form
      :reader default
      :initarg :default)
-   (constructor
-    :reader constructor
-    :initarg :make-with
-    :initform nil)))
+   (specifcp
+    :reader specificp
+    :initarg :specificp)))
+
 
 (defclass container-type (value-type)
   ())
@@ -75,12 +75,6 @@
     :reader size
     :initarg :size)))
 
-(defmethod initialize-instance :after ((type fixed-size-container-type) &key)
-  (with-slots (name short-name default-form contained-types size constructor) type
-    (unless (slot-boundp type 'default-form)
-      (when (and constructor (notany (lambda (x) (eql x '*)) contained-types))
-        (setf default-form
-              `(funcall ,constructor ,@(mapcar (lambda (x) `(default ,x)) contained-types))))))) ;;TODO Let's just imagine that this works for now
 
 
 
@@ -128,8 +122,19 @@
                     (setf short-name 'long-float)))))))))
 
 
+(defclass set-like (value-type)
+  ((types
+    :type list
+    :initarg :types
+    :reader types
+    :initform nil)))
 
-
+(defclass enum (value-type)
+  ((values
+    :type list
+    :initarg :vals
+    :reader vals
+    :initform nil)))
 
 ;; Methods
 

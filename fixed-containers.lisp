@@ -13,10 +13,10 @@
                        :contains (if (= 2 (length parameters))
                                      (mapcar #'typename->protocol parameters)
                                      (list (typename->protocol (car parameters)) '*))
-                       :make-with #'cons
+                       :specificp t
                        :size 2))
       (make-instance 'fixed-size-container-type
                      :name typename
                      :contains '(* *)
-                     :make-with #'cons
+                     :specificp t
                      :size 2)))
